@@ -25,3 +25,5 @@
     </thead>
 </table>
 {{ $customers->links() }}
+
+

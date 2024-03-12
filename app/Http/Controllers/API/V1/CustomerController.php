@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Filters\V1\CustomersFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\StoreCustomerRequest;
+use App\Http\Requests\V1\UpdateCustomerRequest;
 use App\Http\Resources\V1\CustomerCollection;
 use App\Http\Resources\V1\CustomerResource;
 use App\Models\Customer;
@@ -14,20 +16,37 @@ class CustomerController extends Controller
     public function index(Request $req)
     {
 
-        $filter     = new CustomersFilter();
-        $queryItems = $filter->transform($req);          // ['col', 'operator', 'value']
+        $filter             = new CustomersFilter();
+        $filterItems        = $filter->transform($req);          // ['col', 'operator', 'value']
+        $includeInvoices    = request()->query('includeInvoices');
 
+        $customers = Customer::where($filterItems);
 
-        if (count($queryItems) == 0) {
-            return new CustomerCollection(Customer::paginate(10));
-        } else {
-            $customers = Customer::where($queryItems)->paginate();
-            return new CustomerCollection($customers->appends($req->query()));
+        if ($includeInvoices) {
+            $customers = $customers->with('invoices');
+
         }
+
+        return new CustomerCollection(
+            $customers->paginate()->appends($req->query())
+        );
     }
 
     public function show(Customer $customer)
     {
+        $includeInvoices = request()->query('includeInvoices');
+
+        if ($includeInvoices) {
+            return new CustomerResource($customer->loadMissing('invoices'));
+        }
         return new CustomerResource($customer);
+    }
+
+    public function store(StoreCustomerRequest $req) {
+        return new CustomerResource(Customer::create($req->all()));
+    }
+
+    public function update(UpdateCustomerRequest $req, Customer $customer) {
+        $customer->update($req->all());
     }
 }
