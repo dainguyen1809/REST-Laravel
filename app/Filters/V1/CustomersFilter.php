@@ -8,13 +8,13 @@ use Illuminate\Http\Request;
 class CustomersFilter extends ApiFilter
 {
     protected $safeParams = [
-        'name' => ['eq'],
-        'type' => ['eq'],
-        'email' => ['eq'],
-        'address' => ['eq'],
-        'city' => ['eq'],
-        'state' => ['eq'],
-        'postalCode' => ['eq', 'gt', 'lt'],
+        'name'          => ['eq'],
+        'type'          => ['eq'],
+        'email'         => ['eq'],
+        'address'       => ['eq'],
+        'city'          => ['eq'],
+        'state'         => ['eq'],
+        'postalCode'    => ['eq', 'gt', 'lt'],
     ];
 
     protected $columnMap = [
@@ -23,11 +23,11 @@ class CustomersFilter extends ApiFilter
     ];
 
     protected $operatorMap = [
-        'eq' => '=',
-        'lt' => '<',
-        'lte' => '<=',
-        'gt' => '>',
-        'gte' => '>=',
+        'eq'    => '=',
+        'lt'    => '<',
+        'lte'   => '<=',
+        'gt'    => '>',
+        'gte'   => '>=',
     ];
 
     // public function transform(Request $req)

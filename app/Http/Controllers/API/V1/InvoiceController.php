@@ -14,7 +14,7 @@ class InvoiceController extends Controller
     public function index(Request $req)
     {
 
-        $filter = new InvoiceFilters();
+        $filter     = new InvoiceFilters();
         $queryItems = $filter->transform($req);          // ['col', 'operator', 'value']
 
 

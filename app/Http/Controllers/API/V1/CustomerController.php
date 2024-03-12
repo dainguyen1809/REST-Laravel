@@ -14,7 +14,7 @@ class CustomerController extends Controller
     public function index(Request $req)
     {
 
-        $filter = new CustomersFilter();
+        $filter     = new CustomersFilter();
         $queryItems = $filter->transform($req);          // ['col', 'operator', 'value']
 
 
